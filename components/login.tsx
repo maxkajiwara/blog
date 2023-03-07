@@ -19,7 +19,7 @@ const Login = ({ setCookie }: Props) => {
 		e.preventDefault()
 
 		// ! Hardcoded username/password check
-		if (credentials.username === 'max' && credentials.password === 'pass') {
+		if (credentials.username.toLowerCase() === 'max' && credentials.password === 'pass') {
 			// ! Hardcoded login state = true
 			setCookie('logged-in', true, { path: '/' })
 		} else {
