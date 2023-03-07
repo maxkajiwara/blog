@@ -3,6 +3,7 @@ import DateFormatter from './date-formatter'
 import CoverImage from './cover-image'
 import Link from 'next/link'
 import Author from '../types/author'
+import Premium from './premium'
 
 type Props = {
 	title: string
@@ -29,6 +30,7 @@ const HeroPost = ({ title, coverImage, date, excerpt, author, slug, premium }: P
 					</h3>
 					<div className='mb-4 md:mb-0 text-lg'>
 						<DateFormatter dateString={date} />
+						{premium && <Premium />}
 					</div>
 				</div>
 				<div>
