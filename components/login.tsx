@@ -7,17 +7,23 @@ type Props = {
 
 const Login = ({ setCookie }: Props) => {
 	const [credentials, setCredentials] = useState({ username: '', password: '' })
+	const [invalid, setInvalid] = useState(false)
 
 	function handleInput(e: React.FormEvent<HTMLInputElement>) {
+		setInvalid(false)
+
 		setCredentials({ ...credentials, [e.currentTarget.name]: e.currentTarget.value })
 	}
 
-	function handleSubmit() {
+	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault()
+
 		// ! Hardcoded username/password check
 		if (credentials.username === 'max' && credentials.password === 'pass') {
 			// ! Hardcoded login state = true
 			setCookie('logged-in', true, { path: '/' })
 		} else {
+			setInvalid(true)
 		}
 	}
 
@@ -37,7 +43,10 @@ const Login = ({ setCookie }: Props) => {
 						</Link>
 					</div>
 					<div className='relative p-6 flex-auto'>
-						<form className='bg-gray-200 shadow-md rounded px-8 pt-6 pb-8 w-full'>
+						<form
+							className='bg-gray-200 shadow-md rounded px-8 pt-6 pb-8 w-full'
+							onSubmit={(e) => handleSubmit(e)}
+						>
 							<label className='block text-black text-sm font-bold mb-1'>name</label>
 							<input
 								className='shadow appearance-none border rounded w-full py-2 px-1 text-black'
@@ -55,24 +64,20 @@ const Login = ({ setCookie }: Props) => {
 								onChange={(e) => handleInput(e)}
 								required
 							/>
+							<div className='flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b'>
+								<Link as={`/`} href='/'>
+									<div className='text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 cursor-pointer'>
+										Cancel
+									</div>
+								</Link>
+								<input
+									className='text-white bg-yellow-500 active:bg-yellow-700 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 cursor-pointer'
+									type='submit'
+									value='Login'
+								/>
+							</div>
+							{invalid && <div className='text-center'>Invalid credentials</div>}
 						</form>
-					</div>
-					<div className='flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b'>
-						<Link as={`/`} href='/'>
-							<button
-								className='text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1'
-								type='button'
-							>
-								Cancel
-							</button>
-						</Link>
-						<button
-							className='text-white bg-yellow-500 active:bg-yellow-700 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1'
-							type='button'
-							onClick={() => handleSubmit()}
-						>
-							Login
-						</button>
 					</div>
 				</div>
 			</div>
