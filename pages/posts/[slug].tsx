@@ -14,6 +14,7 @@ import PostType from '../../types/post'
 
 import Login from '../../components/login'
 import { useCookies } from 'react-cookie'
+import Logout from '../../components/logout'
 
 type Props = {
 	post: PostType
@@ -22,7 +23,7 @@ type Props = {
 }
 
 const Post = ({ post, morePosts, preview }: Props) => {
-	const [cookies, setCookie] = useCookies(['logged-in'])
+	const [cookies, setCookie, removeCookie] = useCookies(['logged-in'])
 	const router = useRouter()
 	if (!router.isFallback && !post?.slug) {
 		return <ErrorPage statusCode={404} />
@@ -30,6 +31,7 @@ const Post = ({ post, morePosts, preview }: Props) => {
 
 	return (
 		<Layout preview={preview}>
+			{cookies['logged-in'] && <Logout removeCookie={removeCookie} />}
 			<Container>
 				<Header />
 				{router.isFallback ? (

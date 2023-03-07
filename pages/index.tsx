@@ -8,11 +8,15 @@ import Head from 'next/head'
 import { CMS_NAME } from '../lib/constants'
 import Post from '../types/post'
 
+import { useCookies } from 'react-cookie'
+import Logout from '../components/logout'
+
 type Props = {
 	allPosts: Post[]
 }
 
 const Index = ({ allPosts }: Props) => {
+	const [cookies, , removeCookie] = useCookies(['logged-in'])
 	const heroPost = allPosts[0]
 	const morePosts = allPosts.slice(1)
 	return (
@@ -22,6 +26,7 @@ const Index = ({ allPosts }: Props) => {
 					<title>Next.js Blog Example with {CMS_NAME}</title>
 				</Head>
 				<Container>
+					{cookies['logged-in'] && <Logout removeCookie={removeCookie} />}
 					<Intro />
 					{heroPost && (
 						<HeroPost
